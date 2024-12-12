@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_serial_communication/flutter_serial_communication.dart';
 import 'package:flutter_serial_communication/models/device_info.dart';
 
@@ -12,45 +13,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ESP32 USB Slider',
+      title: 'ESP32 RGB Controller',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SliderPage(),
+      home: RGBControllerPage(),
     );
   }
 }
 
-class SliderPage extends StatefulWidget {
+class RGBControllerPage extends StatefulWidget {
   @override
-  _SliderPageState createState() => _SliderPageState();
+  _RGBControllerPageState createState() => _RGBControllerPageState();
 }
 
-class _SliderPageState extends State<SliderPage> {
+class _RGBControllerPageState extends State<RGBControllerPage> {
   final FlutterSerialCommunication _serialCommunication = FlutterSerialCommunication();
   List<DeviceInfo> connectedDevices = [];
   bool isConnected = false;
-  double _sliderValue = 0;
-  List<String> receivedMessages = [];
+  Color _selectedColor = Colors.black;
 
   @override
   void initState() {
     super.initState();
-
-    // Listener for incoming messages
-    _serialCommunication
-        .getSerialMessageListener()
-        .receiveBroadcastStream()
-        .listen((event) {
-      try {
-        final String message = String.fromCharCodes(event);
-        setState(() {
-          receivedMessages.add(message);
-        });
-      } catch (e) {
-        debugPrint("Error processing received data: $e");
-      }
-    });
 
     // Listener for device connection status
     _serialCommunication
@@ -92,12 +77,13 @@ class _SliderPageState extends State<SliderPage> {
 
   Future<void> _sendCommand(String command) async {
     if (!isConnected) return;
-    bool success = await _serialCommunication.write(Uint8List.fromList('${command.trim()}\n'.codeUnits));
+    bool success = await _serialCommunication.write(Uint8List.fromList('${command.trim()};'.codeUnits));
     debugPrint("Command ($command) sent successfully: $success");
   }
 
-  Future<void> _sendValueToESP32(int value) async {
-    await _sendCommand(value.toString());
+  Future<void> _sendColorToESP32(Color color) async {
+    String rgbCommand = "${color.red},${color.green},${color.blue}";
+    await _sendCommand(rgbCommand);
   }
 
   @override
@@ -110,50 +96,76 @@ class _SliderPageState extends State<SliderPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ESP32 USB Slider'),
+        title: Text('ESP32 RGB Controller'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Valeur: ${_sliderValue.toInt()}',
-            style: TextStyle(fontSize: 24),
-          ),
-          Slider(
-            value: _sliderValue,
-            min: 0,
-            max: 1023,
-            divisions: 1023,
-            label: _sliderValue.toInt().toString(),
-            onChanged: (value) {
-              setState(() {
-                _sliderValue = value;
-              });
-              _sendValueToESP32(value.toInt());
-            },
-          ),
-          SizedBox(height: 20),
-          isConnected
-              ? Text("Périphérique connecté", style: TextStyle(color: Colors.green))
-              : Text("Périphérique déconnecté", style: TextStyle(color: Colors.red)),
-          ElevatedButton(
-            onPressed: isConnected ? _disconnectDevice : null,
-            child: Text("Déconnecter"),
-          ),
-          SizedBox(height: 20),
-          Expanded(
-            child: ListView.builder(
-              itemCount: receivedMessages.length,
-              itemBuilder: (context, index) {
-                return Text(
-                  receivedMessages[index],
-                  style: TextStyle(fontSize: 16),
-                );
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Couleur sélectionnée',
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(height: 20),
+            GestureDetector(
+              onTap: () => _showColorPicker(context),
+              child: Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  color: _selectedColor,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.black, width: 2),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: isConnected ? () => _sendColorToESP32(_selectedColor) : null,
+              child: Text("Envoyer la couleur"),
+            ),
+            SizedBox(height: 20),
+            isConnected
+                ? Text("Périphérique connecté", style: TextStyle(color: Colors.green))
+                : Text("Périphérique déconnecté", style: TextStyle(color: Colors.red)),
+            ElevatedButton(
+              onPressed: isConnected ? _disconnectDevice : null,
+              child: Text("Déconnecter"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showColorPicker(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Choisissez une couleur'),
+          content: SingleChildScrollView(
+            child: ColorPicker(
+              pickerColor: _selectedColor,
+              onColorChanged: (color) {
+                setState(() {
+                  _selectedColor = color;
+                });
               },
+              showLabel: true,
+              pickerAreaHeightPercent: 0.8,
             ),
           ),
-        ],
-      ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Fermer'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
