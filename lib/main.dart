@@ -28,6 +28,7 @@ class _LampControlPageState extends State<LampControlPage> {
   final FlutterSerialCommunication _serialCommunication = FlutterSerialCommunication();
   bool isConnected = false;
   List<DeviceInfo> connectedDevices = [];
+  List<String> receivedMessages = [];
 
   @override
   void initState() {
@@ -37,8 +38,19 @@ class _LampControlPageState extends State<LampControlPage> {
         .getSerialMessageListener()
         .receiveBroadcastStream()
         .listen((event) {
-      debugPrint("Received: $event");
+      try {
+        final String message = String.fromCharCodes(event);
+        if (message.startsWith("LOG:")) {
+          return;
+        }
+        setState(() {
+          receivedMessages.add(message);
+        });
+      } catch (e) {
+        debugPrint("Error processing received data: $e");
+      }
     });
+
 
     _serialCommunication
         .getDeviceConnectionListener()
@@ -58,7 +70,7 @@ class _LampControlPageState extends State<LampControlPage> {
   }
 
   Future<void> _connectDevice(DeviceInfo deviceInfo) async {
-    bool connectionSuccess = await _serialCommunication.connect(deviceInfo, 9600);
+    bool connectionSuccess = await _serialCommunication.connect(deviceInfo, 115200);
     debugPrint("Connection success: $connectionSuccess");
   }
 
@@ -72,7 +84,7 @@ class _LampControlPageState extends State<LampControlPage> {
   Future<void> _sendCommand(String command) async {
     if (!isConnected) return;
     bool success = await _serialCommunication.write(Uint8List.fromList('${command.trim()}\n'.codeUnits));
-    debugPrint("Command sent successfully: $success");
+    debugPrint("Command ($command) sent successfully: $success");
   }
 
   @override
@@ -119,6 +131,18 @@ class _LampControlPageState extends State<LampControlPage> {
             ElevatedButton(
               onPressed: isConnected ? () => _sendCommand("OFF") : null,
               child: const Text("Turn OFF"),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: receivedMessages.length,
+                itemBuilder: (context, index) {
+                  return Text(
+                    receivedMessages[index],
+                    style: const TextStyle(fontSize: 16),
+                  );
+                },
+              ),
             ),
           ],
         ),
