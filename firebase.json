@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"skylab-mobile","appId":"1:303264154880:android:0d94978eda0cc6d35c1fe5","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"skylab-mobile","configurations":{"android":"1:303264154880:android:0d94978eda0cc6d35c1fe5","ios":"1:303264154880:ios:f0be65e5414b689d5c1fe5"}}}}}}
