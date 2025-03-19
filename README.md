@@ -14,3 +14,13 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+commands to remember:
+adelia@Adelias-MacBook-Air.local /Users/adelia/DEV/skylab-mobile [authentication]
+% history
+ 1038  firebase logout\nfirebase login\nfirebase --update
+ 1039  firebase projects:list --json
+ 1040  flutterfire configure --project=skylab-mobile
+ 1044  git switch authentication
+ 1051  flutter pub get\n
+ 1052  flutter run -d chrome

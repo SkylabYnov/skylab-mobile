@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>303264154880-ei0i0vsmeih0lukoi1f58ui2iep6t1ri.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.303264154880-ei0i0vsmeih0lukoi1f58ui2iep6t1ri</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>303264154880-riersu5feqqukbbq1o7u12fsvj7ard3n.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCUX5B8IlsYBX53RcNkF4XjpsObKvqnJl8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>303264154880</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>fr.skylabs.mobile.skylabMobile</string>
+	<key>PROJECT_ID</key>
+	<string>skylab-mobile</string>
+	<key>STORAGE_BUCKET</key>
+	<string>skylab-mobile.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:303264154880:ios:f0be65e5414b689d5c1fe5</string>
+</dict>
+</plist>

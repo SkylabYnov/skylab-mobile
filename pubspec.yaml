@@ -32,6 +32,9 @@ dependencies:
     sdk: flutter
   flutter_serial_communication: ^0.2.7
   permission_handler: ^11.3.1
+  firebase_core: ^2.30.0
+  firebase_auth: ^4.17.0
+
 
 dev_dependencies:
   flutter_test:

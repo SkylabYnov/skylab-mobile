@@ -12,7 +12,7 @@ class _SignupScreenState extends State<SignupScreen>{
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
-    void signUn() async {
+    void signUp() async {
         User? user = await AuthService().signUp(emailController.text, passwordController.text);
         if (user != null) {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
