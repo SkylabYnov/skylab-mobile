@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
+import '../theme/theme_provider.dart'; 
 import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -15,9 +17,19 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 AuthService().signOut();
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
               },
               child: Text("Logout"),
+            ),
+            // Corrected ElevatedButton placement
+            ElevatedButton(
+              onPressed: () {
+                Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+              },
+              child: Text("Switch Theme"),
             ),
           ],
         ),

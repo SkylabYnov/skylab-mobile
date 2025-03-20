@@ -1,0 +1,18 @@
+flutter_native_splash:
+  android: true
+  ios: true
+  color: "#F9F9F9"
+
+  # Mode clair
+  image: assets/icon-skylab.png
+
+  # Mode sombre
+  image_dark: assets/icon-skylab.png
+  color_dark: "#272727"
+
+  # Configuration Android 12 (mode sombre et clair)
+  android_12:
+    color: "#F9F9F9"
+    image: assets/icon-skylab.png
+    color_dark: "#272727"
+    image_dark: assets/icon-skylab.png
