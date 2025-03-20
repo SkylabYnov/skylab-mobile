@@ -16,17 +16,14 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => UserViewModel()), 
       ],
-      child: MyApp(),
+      child: SkyLabApp(),
     ),
   );
 
   runApp(const SkyLabApp());
 }
 
-
 class SkyLabApp extends StatelessWidget {
-  const SkyLabApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
