@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:provider/provider.dart'; 
+import 'views/login_screen.dart';
+import 'views/home_screen.dart';
+import 'core/theme/theme_provider.dart';
+import 'view_models/user_view_model.dart';
 
 Future<void> main() async {
   await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform, 
+  );
+  
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => UserViewModel()), 
+      ],
+      child: MyApp(),
+    ),
   );
 
   runApp(const SkyLabApp());
