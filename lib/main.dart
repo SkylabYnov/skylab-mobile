@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
           title: 'Drone App',
           theme: themeProvider.themeData,
           home: HomeScreen(),
+          themeMode: ThemeMode.system,
         );
       },
     );
