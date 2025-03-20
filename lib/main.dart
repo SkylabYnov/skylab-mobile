@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'core/config/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; 
-import 'views/login_screen.dart';
 import 'core/theme/theme_provider.dart';
 import 'views/home_screen.dart';
 
@@ -15,12 +14,14 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(),
-      child: MyApp(),
+      child: SkylabApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class SkylabApp extends StatelessWidget {
+  const SkylabApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
