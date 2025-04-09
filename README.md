@@ -22,5 +22,6 @@ adelia@Adelias-MacBook-Air.local /Users/adelia/DEV/skylab-mobile [authentication
  1039  firebase projects:list --json
  1040  flutterfire configure --project=skylab-mobile
  1044  git switch authentication
- 1051  flutter pub get\n
- 1052  flutter run -d chrome
+flutter clean
+flutter pub get
+flutter run -d chrome

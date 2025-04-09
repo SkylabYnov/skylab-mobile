@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; 
 import 'views/login_screen.dart';
 import 'core/theme/theme_provider.dart';
+import 'view_models/user_view_model.dart';
 import 'views/home_screen.dart';
 
 void main() async {
@@ -13,8 +14,11 @@ void main() async {
   );
   
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => UserViewModel()), 
+      ],
       child: MyApp(),
     ),
   );
