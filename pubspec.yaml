@@ -1,5 +1,5 @@
 name: skylab_mobile
-description: "A new Flutter project."
+description: "Application pour contrôler le drone modulaire de Skylab"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -28,14 +28,15 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  firebase_core: ^2.25.0
   flutter:
     sdk: flutter
-  flutter_serial_communication: ^0.2.7
+  flutter_native_splash: ^2.4.5
   permission_handler: ^11.3.1
   firebase_core: ^2.30.0
   firebase_auth: ^4.17.0
   provider: ^6.1.2
-
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:

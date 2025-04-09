@@ -6,7 +6,6 @@ import '../widgets/buttons/primary_button.dart';
 import 'home_screen.dart';
 import '../widgets/app_logo.dart';
 
-
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();

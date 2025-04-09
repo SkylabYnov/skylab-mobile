@@ -6,5 +6,5 @@ final darkTheme = ThemeData(
     primary: Color(0xFF035A89), 
     primaryContainer: Color(0xFF12435E),
   ),
-  scaffoldBackgroundColor: Color(0xFF272727), 
+  scaffoldBackgroundColor: Color(0xFF272727),
 );
