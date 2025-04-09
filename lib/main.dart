@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'views/login_screen.dart';
 import 'core/theme/theme_provider.dart';
 import 'view_models/user_view_model.dart';
-import 'views/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,12 +18,14 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => UserViewModel()), 
       ],
-      child: MyApp(),
+      child: SkylabApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
+class SkylabApp extends StatelessWidget {
+  const SkylabApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
