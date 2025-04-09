@@ -10,10 +10,10 @@ class AppLogo extends StatelessWidget {
     return Column(
       children: [
         Image.asset(
-          'assets/logo.png',
-          height: 100,
+          'assets/logo-skylab.png',
+          height: 200,
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 40),
         Text(
           title,
           style: const TextStyle(

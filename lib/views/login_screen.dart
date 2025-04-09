@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
 import 'signup_screen.dart';
+import '../widgets/buttons/primary_button.dart';
 import 'home_screen.dart';
+import '../widgets/app_logo.dart';
+
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -30,13 +33,28 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(controller: emailController, decoration: InputDecoration(labelText: "Email")),
-            TextField(controller: passwordController, decoration: InputDecoration(labelText: "Password"), obscureText: true),
+            AppLogo(title: "Connexion"),
+            SizedBox(height: 40),
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(labelText: "Email"),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: "Password"),
+              obscureText: true,
+            ),
             SizedBox(height: 20),
-            ElevatedButton(onPressed: login, child: Text("Login")),
+            PrimaryButton(
+              child: Text("Login"),
+              onPressed: login,
+            ),
             TextButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SignupScreen())),
-              child: Text("Don't have an account? Sign up"),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignupScreen()),
+              ),
+              child: Text("New to our app ? Create an account"),
             ),
           ],
         ),

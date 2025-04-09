@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../view_models/user_view_model.dart';
+import '../widgets/buttons/primary_button.dart';
+import '../widgets/app_logo.dart';
 import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -22,10 +24,20 @@ class _SignupScreenState extends State<SignupScreen> {
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(controller: emailController, decoration: InputDecoration(labelText: "Email")),
-            TextField(controller: passwordController, decoration: InputDecoration(labelText: "Password"), obscureText: true),
+            AppLogo(title: "Inscription"),
+            SizedBox(height: 40),
+            TextField(
+              controller: emailController,
+              decoration: InputDecoration(labelText: "Email"),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: InputDecoration(labelText: "Password"),
+              obscureText: true,
+            ),
             SizedBox(height: 20),
-            ElevatedButton(
+            PrimaryButton(
+              child: Text("Sign up"),
               onPressed: () async {
                 String email = emailController.text.trim();
                 String password = passwordController.text.trim();
@@ -39,17 +51,22 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 bool success = await userViewModel.signUp(email, password);
                 if (success) {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("Sign up failed")),
                   );
                 }
               },
-              child: Text("Sign up"),
             ),
             TextButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              ),
               child: Text("Already have an account? Login"),
             ),
           ],

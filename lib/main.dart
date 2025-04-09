@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'views/login_screen.dart';
 import 'core/theme/theme_provider.dart';
 import 'view_models/user_view_model.dart';
-import 'views/home_screen.dart';
+import 'views/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Drone App',
           theme: themeProvider.themeData,
-          home: HomeScreen(),
+          home: LoginScreen(),
         );
       },
     );
