@@ -28,34 +28,39 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Login")),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            AppLogo(title: "Connexion"),
-            SizedBox(height: 40),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: "Email"),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppLogo(title: "Connexion"),
+                SizedBox(height: 40),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(labelText: "Email"),
+                ),
+                TextField(
+                  controller: passwordController,
+                  decoration: InputDecoration(labelText: "Password"),
+                  obscureText: true,
+                ),
+                SizedBox(height: 20),
+                PrimaryButton(
+                  child: Text("Login"),
+                  onPressed: login,
+                ),
+                TextButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignupScreen()),
+                  ),
+                  child: Text("New to our app ? Create an account"),
+                ),
+              ],
             ),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(labelText: "Password"),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            PrimaryButton(
-              child: Text("Login"),
-              onPressed: login,
-            ),
-            TextButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SignupScreen()),
-              ),
-              child: Text("New to our app ? Create an account"),
-            ),
-          ],
+          ),
         ),
       ),
     );
