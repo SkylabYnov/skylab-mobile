@@ -20,56 +20,61 @@ class _SignupScreenState extends State<SignupScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text("Sign up")),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            AppLogo(title: "Inscription"),
-            SizedBox(height: 40),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(labelText: "Email"),
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(labelText: "Password"),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            PrimaryButton(
-              child: Text("Sign up"),
-              onPressed: () async {
-                String email = emailController.text.trim();
-                String password = passwordController.text.trim();
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppLogo(title: "Inscription"),
+                SizedBox(height: 40),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(labelText: "Email"),
+                ),
+                TextField(
+                  controller: passwordController,
+                  decoration: InputDecoration(labelText: "Password"),
+                  obscureText: true,
+                ),
+                SizedBox(height: 20),
+                PrimaryButton(
+                  child: Text("Sign up"),
+                  onPressed: () async {
+                    String email = emailController.text.trim();
+                    String password = passwordController.text.trim();
 
-                if (email.isEmpty || password.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Please fill in all fields")),
-                  );
-                  return;
-                }
+                    if (email.isEmpty || password.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Please fill in all fields")),
+                      );
+                      return;
+                    }
 
-                bool success = await userViewModel.signUp(email, password);
-                if (success) {
-                  Navigator.pushReplacement(
+                    bool success = await userViewModel.signUp(email, password);
+                    if (success) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Sign up failed")),
+                      );
+                    }
+                  },
+                ),
+                TextButton(
+                  onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => LoginScreen()),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Sign up failed")),
-                  );
-                }
-              },
+                  ),
+                  child: Text("Already have an account? Login"),
+                ),
+              ],
             ),
-            TextButton(
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-              ),
-              child: Text("Already have an account? Login"),
-            ),
-          ],
+          ),
         ),
       ),
     );
