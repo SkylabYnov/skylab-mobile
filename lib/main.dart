@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'core/config/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; 
+import 'views/login_screen.dart';
 import 'core/theme/theme_provider.dart';
-import 'views/home_screen.dart';
+import 'view_models/user_view_model.dart';
+import 'views/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,16 +14,17 @@ void main() async {
   );
   
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: SkylabApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => UserViewModel()), 
+      ],
+      child: MyApp(),
     ),
   );
 }
 
-class SkylabApp extends StatelessWidget {
-  const SkylabApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
@@ -29,8 +32,7 @@ class SkylabApp extends StatelessWidget {
         return MaterialApp(
           title: 'Drone App',
           theme: themeProvider.themeData,
-          home: HomeScreen(),
-          themeMode: ThemeMode.system,
+          home: LoginScreen(),
         );
       },
     );

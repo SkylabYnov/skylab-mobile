@@ -193,11 +193,19 @@ packages:
   flutter_native_splash:
     dependency: "direct main"
     description:
-      name: flutter_native_splash
+     name: flutter_native_splash
       sha256: edb09c35ee9230c4b03f13dd45bb3a276d0801865f0a4650b7e2a3bba61a803a
       url: "https://pub.dev"
     source: hosted
     version: "2.4.5"
+  flutter_serial_communication:
+    dependency: "direct main"
+    description:
+     name: flutter_serial_communication
+      sha256: "5ef6696dac2a2b31737a65981b2042f77f470131570d87fafbbfb55dce9be2b1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.8"
   flutter_test:
     dependency: "direct dev"
     description: flutter
