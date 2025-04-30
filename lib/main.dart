@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:skylab_mobile/view_models/home_view_model.dart';
 import 'core/config/firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; 
@@ -16,7 +17,8 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => UserViewModel()), 
+        ChangeNotifierProvider(create: (_) => UserViewModel()),
+        ChangeNotifierProvider(create: (_) => HomeViewModel()),
       ],
       child: SkylabApp(),
     ),
