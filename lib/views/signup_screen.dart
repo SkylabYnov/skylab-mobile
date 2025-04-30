@@ -4,6 +4,7 @@ import '../view_models/user_view_model.dart';
 import '../widgets/buttons/primary_button.dart';
 import '../widgets/app_logo.dart';
 import 'login_screen.dart';
+import '../widgets/custom_text_field.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -29,13 +30,13 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 AppLogo(title: "Inscription"),
                 SizedBox(height: 40),
-                TextField(
+                CustomTextField(
                   controller: emailController,
-                  decoration: InputDecoration(labelText: "Email"),
+                  labelText: "Email",
                 ),
-                TextField(
+                CustomTextField(
                   controller: passwordController,
-                  decoration: InputDecoration(labelText: "Password"),
+                  labelText: "Password",
                   obscureText: true,
                 ),
                 SizedBox(height: 20),

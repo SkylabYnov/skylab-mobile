@@ -16,7 +16,7 @@ class PrimaryButton extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
-      width: screenWidth * 0.9, // 90% of the screen width
+      width: screenWidth * 0.5, 
       child: ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -32,7 +32,7 @@ class PrimaryButton extends StatelessWidget {
             EdgeInsets.symmetric(vertical: 16),
           ),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           ),
         ),
         onPressed: onPressed,

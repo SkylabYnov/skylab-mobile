@@ -5,6 +5,7 @@ import 'signup_screen.dart';
 import '../widgets/buttons/primary_button.dart';
 import 'home_screen.dart';
 import '../widgets/app_logo.dart';
+import '../widgets/custom_text_field.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -37,13 +38,13 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 AppLogo(title: "Connexion"),
                 SizedBox(height: 40),
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(labelText: "Email"),
+                CustomTextField(
+                controller: emailController,
+                labelText: "Email",
                 ),
-                TextField(
+                CustomTextField(
                   controller: passwordController,
-                  decoration: InputDecoration(labelText: "Password"),
+                  labelText: "Password",
                   obscureText: true,
                 ),
                 SizedBox(height: 20),
