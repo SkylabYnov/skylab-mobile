@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 AppLogo(title: "Connexion"),
                 SizedBox(height: 40),
+
                 CustomTextField(
                 controller: emailController,
                 labelText: "Email",
@@ -46,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 CustomTextField(
                   controller: passwordController,
                   labelText: "Password",
+
                   obscureText: true,
                 ),
                 SizedBox(height: 20),

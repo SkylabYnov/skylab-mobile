@@ -30,6 +30,7 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 AppLogo(title: "Inscription"),
                 SizedBox(height: 40),
+
                 CustomTextField(
                   controller: emailController,
                   labelText: "Email",
@@ -37,6 +38,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 CustomTextField(
                   controller: passwordController,
                   labelText: "Password",
+
                   obscureText: true,
                 ),
                 SizedBox(height: 20),
