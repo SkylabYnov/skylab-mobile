@@ -13,7 +13,6 @@ class AppLogo extends StatelessWidget {
           'assets/logo-skylab.png',
           height: 200,
         ),
-        const SizedBox(height: 40),
         Text(
           title,
           style: const TextStyle(

@@ -24,7 +24,6 @@ class HomeScreen extends StatelessWidget {
               },
               child: Text("Logout"),
             ),
-            // Corrected ElevatedButton placement
             ElevatedButton(
               onPressed: () {
                 Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
