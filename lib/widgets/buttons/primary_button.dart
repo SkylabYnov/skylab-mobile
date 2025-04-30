@@ -32,7 +32,7 @@ class PrimaryButton extends StatelessWidget {
             EdgeInsets.symmetric(vertical: 16),
           ),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           ),
         ),
         onPressed: onPressed,

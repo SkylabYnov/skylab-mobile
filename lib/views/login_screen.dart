@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
 import 'signup_screen.dart';
+import 'onboarding_screen.dart';
 import '../widgets/buttons/primary_button.dart';
 import 'home_screen.dart';
 import '../widgets/app_logo.dart';
@@ -19,7 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void login() async {
     User? user = await AuthService().signIn(emailController.text, passwordController.text);
     if (user != null) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OnboardingScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login failed")));
     }

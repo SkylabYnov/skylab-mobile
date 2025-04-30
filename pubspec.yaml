@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  smooth_page_indicator: ^1.1.0
   flutter:
     sdk: flutter
   flutter_native_splash: ^2.4.5
@@ -48,7 +49,13 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
+    - assets/icon-arrow-left.png
+    - assets/icon-arrow-right.png
+    - assets/icon-skylab.png
     - assets/logo-skylab.png
+
+
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
