@@ -1,124 +1,142 @@
-// lib/views/onboarding_screen.dart
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import '../widgets/app_logo.dart';
-import 'home_screen.dart';
+import 'package:introduction_screen/introduction_screen.dart';
+import 'package:skylab_mobile/widgets/app_logo.dart';
+import 'package:skylab_mobile/views/home_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class OnboardingScreen extends StatefulWidget {
-  @override
-  _OnboardingScreenState createState() => _OnboardingScreenState();
-}
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _controller = PageController();
-  int _currentPage = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(() {
-      setState(() {
-        _currentPage = _controller.page?.round() ?? 0;
-      });
-    });
+  Future<void> _setOnboardingSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasSeenOnboarding', true);
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  void _goToNextPage(BuildContext context) {
-    if (_currentPage == 2) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => HomeScreen()),
-      );
-    } else {
-      _controller.nextPage(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
-
-  void _goToPreviousPage() {
-    if (_currentPage > 0) {
-      _controller.previousPage(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
+  Future<bool> _getOnboardingStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('hasSeenOnboarding') ?? false;
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return FutureBuilder<bool>(
+        future: _getOnboardingStatus(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Column(
-        children: [
-          Expanded(
-            child: PageView.builder(
-              controller: _controller,
-              itemCount: 3,
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    AppLogo(title: "Bienvenue\ndans Skylab"),
-                    const SizedBox(height: 40),
-                    Text(
-                      'The tutorial text',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            color: isDark ? Colors.white : Colors.black,
+          if (snapshot.data == true) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => HomeScreen()),
+              );
+            });
+            return Container();
+          }
+
+          List<PageViewModel> getPages() {
+            return [
+              PageViewModel(
+                title: "Bienvenue\ndans Skylab",
+                body: "Explorez notre application et ses fonctionnalités.",
+                image: AppLogo(title: "Skylab"),
+                decoration: PageDecoration(
+                  imageFlex: 2,
+                  bodyFlex: 1,
+                  titleTextStyle:
+                      Theme.of(context).textTheme.headlineMedium!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 20),
-          SmoothPageIndicator(
-            controller: _controller,
-            count: 3,
-            effect: WormEffect(
-              dotColor: Colors.grey,
-              activeDotColor: isDark ? Colors.white : Colors.black,
-              dotHeight: 10,
-              dotWidth: 10,
-            ),
-          ),
-          const SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                GestureDetector(
-                  onTap: _goToPreviousPage,
-                  child: Image.asset(
-                    'assets/icon-arrow-left.png',
-                    height: 40,
-                  ),
+                  bodyTextStyle:
+                      Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.normal,
+                          ),
+                  pageColor: Theme.of(context).scaffoldBackgroundColor,
+                  imagePadding: EdgeInsets.all(20),
                 ),
-                GestureDetector(
-                  onTap: () => _goToNextPage(context),
-                  child: Image.asset(
-                    'assets/icon-arrow-right.png',
-                    height: 40,
-                  ),
+              ),
+              PageViewModel(
+                title: "Fonctionnalités",
+                body:
+                    "Découvrez toutes les fonctionnalités qui vous attendent.",
+                image: AppLogo(title: "Fonctionnalités"),
+                // Personnaliser l'image pour cette page
+                decoration: PageDecoration(
+                  imageFlex: 2,
+                  bodyFlex: 1,
+                  titleTextStyle:
+                      Theme.of(context).textTheme.headlineMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                  bodyTextStyle:
+                      Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.normal,
+                          ),
+                  pageColor: Theme.of(context).scaffoldBackgroundColor,
+                  imagePadding: EdgeInsets.all(20),
                 ),
-              ],
+              ),
+              PageViewModel(
+                title: "Prêt à commencer ?",
+                body:
+                    "Commencez dès maintenant et profitez de l'expérience Skylab.",
+                image: AppLogo(title: "Démarrer"), // Personnaliser l'image
+                decoration: PageDecoration(
+                  imageFlex: 2,
+                  bodyFlex: 1,
+                  titleTextStyle:
+                      Theme.of(context).textTheme.headlineMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                  bodyTextStyle:
+                      Theme.of(context).textTheme.bodyMedium!.copyWith(
+                            fontWeight: FontWeight.normal,
+                          ),
+                  pageColor: Theme.of(context).scaffoldBackgroundColor,
+                  imagePadding: EdgeInsets.all(20),
+                ),
+              ),
+            ];
+          }
+
+          return Scaffold(
+            body: SafeArea(
+              child: IntroductionScreen(
+                pages: getPages(),
+                onDone: () {
+                  _setOnboardingSeen();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => HomeScreen()),
+                  );
+                },
+                showNextButton: true,
+                next: Icon(Icons.arrow_forward),
+                done:
+                    Text("Done", style: TextStyle(fontWeight: FontWeight.w600)),
+                onSkip: () {
+                  _setOnboardingSeen();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => HomeScreen()),
+                  );
+                },
+                showSkipButton: true,
+                skip: Text("Skip"),
+                dotsDecorator: DotsDecorator(
+                  size: Size(10.0, 10.0),
+                  activeSize: Size(22.0, 10.0),
+                  color: Colors.grey,
+                  activeColor: Theme.of(context).primaryColor,
+                  spacing: EdgeInsets.symmetric(horizontal: 3.0),
+                ),
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          );
+        });
   }
 }

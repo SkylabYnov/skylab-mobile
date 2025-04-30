@@ -19,19 +19,19 @@ class PrimaryButton extends StatelessWidget {
       width: screenWidth * 0.5, 
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.hovered)) {
+          backgroundColor: WidgetStateProperty.resolveWith<Color>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.hovered)) {
                 return colorScheme.primaryContainer;
               }
               return colorScheme.primary;
             },
           ),
-          foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          padding: MaterialStateProperty.all<EdgeInsets>(
+          foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+          padding: WidgetStateProperty.all<EdgeInsets>(
             EdgeInsets.symmetric(vertical: 16),
           ),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           ),
         ),
