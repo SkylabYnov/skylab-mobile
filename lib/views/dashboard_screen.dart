@@ -23,7 +23,7 @@ class _DroneControllerScreenState extends State<DroneControllerScreen> {
             child: Card(
               elevation: 4,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Center(child: Text("Drone Widget", style: TextStyle(fontSize: 18))),
+              child: Center(child: Text("Drone", style: TextStyle(fontSize: 18))),
             ),
           ),
           SizedBox(height: 16),
@@ -31,7 +31,7 @@ class _DroneControllerScreenState extends State<DroneControllerScreen> {
             child: Card(
               elevation: 4,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              child: Center(child: Text("Controller Widget", style: TextStyle(fontSize: 18))),
+              child: Center(child: Text("Controller", style: TextStyle(fontSize: 18))),
             ),
           ),
         ],
