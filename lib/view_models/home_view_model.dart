@@ -1,18 +1,51 @@
+import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
-import 'package:skylab_mobile/services/serial_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_serial_communication/models/device_info.dart';
+import 'package:skylab_mobile/services/serial_service.dart';
 
 class HomeViewModel extends ChangeNotifier {
   final SerialService _serialService = SerialService();
 
-  String _status = 'Not connected';
-  String _receivedData = '';  // Pour afficher les données reçues
-  List<DeviceInfo> _availableDevices = [];
+  String _messageTitle = '';
+  String _messageBody = '';
 
+  String get messageTitle => _messageTitle;
+  String get messageBody => _messageBody;
+
+  set messageTitle(String value) {
+    _messageTitle = value;
+    notifyListeners();
+  }
+
+  set messageBody(String value) {
+    _messageBody = value;
+    notifyListeners();
+  }
+
+  Future<void> sendComposedMessage() async {
+    if (_messageTitle.isEmpty || _messageBody.isEmpty) return;
+
+    final json = { _messageTitle: _messageBody };
+    await send(jsonEncode(json));
+  }
+
+  String _status = 'Not connected';
   String get status => _status;
+
+  String _receivedData = '';
   String get receivedData => _receivedData;
+
+  List<DeviceInfo> _availableDevices = [];
   List<DeviceInfo> get availableDevices => _availableDevices;
+
+  DeviceInfo? _selectedDevice;
+  DeviceInfo? get selectedDevice => _selectedDevice;
+  set selectedDevice(DeviceInfo? device) {
+    _selectedDevice = device;
+    notifyListeners();
+  }
+
   bool get isConnected => _serialService.isConnected;
 
   Future<void> loadDevices() async {
@@ -20,17 +53,25 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> connect(DeviceInfo device) async {
-    bool ok = await _serialService.connect(device);
+  Future<void> connect() async {
+    if (_selectedDevice == null) return;
+    bool ok = await _serialService.connect(_selectedDevice!);
     if (ok) {
-      _status = 'Connected to ${device.productName}';
+      _status = 'Connected to ${_selectedDevice!.productName}';
+      notifyListeners();
 
-      _serialService.onMessageReceived().listen((event) {
-        _receivedData += String.fromCharCodes(event);  // Conversion des bytes en chaîne ASCII
+      _serialService
+          .onMessageReceived()
+          .cast<Uint8List>()
+          .listen((data) {
+        _receivedData += utf8.decode(data);
         notifyListeners();
       });
 
-      _serialService.onConnectionChanged().listen((connected) {
+      _serialService
+          .onConnectionChanged()
+          .cast<bool>()
+          .listen((connected) {
         if (!connected) {
           _status = 'Disconnected';
           notifyListeners();
@@ -38,8 +79,13 @@ class HomeViewModel extends ChangeNotifier {
       });
     } else {
       _status = 'Connection failed';
+      notifyListeners();
     }
-    notifyListeners();
+  }
+
+  Future<void> send(String message) async {
+    String out = message.endsWith('\n') ? message : '$message\n';
+    await _serialService.send(Uint8List.fromList(utf8.encode(out)));
   }
 
   Future<void> disconnect() async {
@@ -48,18 +94,8 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> send(String message) async {
-    await _serialService.send(Uint8List.fromList(message.codeUnits));
-  }
-
   void clearReceivedData() {
-    _receivedData = '';  // Effacer les messages reçus
+    _receivedData = '';
     notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    _serialService.disconnect();
-    super.dispose();
   }
 }
