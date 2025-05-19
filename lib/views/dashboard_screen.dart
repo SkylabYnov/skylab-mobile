@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:skylab_mobile/views/settings_screen.dart';
+
 
 class DroneControllerScreen extends StatefulWidget {
   @override
@@ -54,7 +56,10 @@ class _DroneControllerScreenState extends State<DroneControllerScreen> {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              // Navigate to app settings
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              );
             },
           ),
         ],
