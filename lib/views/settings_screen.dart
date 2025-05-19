@@ -4,6 +4,7 @@ import 'package:skylab_mobile/core/theme/dark_theme.dart';
 import 'package:skylab_mobile/core/theme/theme_provider.dart';
 import '../services/auth_service.dart';
 import 'package:skylab_mobile/views/login_screen.dart';
+import 'package:skylab_mobile/views/edit_profile_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -25,9 +26,10 @@ class SettingsScreen extends StatelessWidget {
             leading: const Icon(Icons.edit),
             title: const Text("Edit Profile"),
             onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Edit Profile tapped")),
-              );
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const EditProfileScreen()),
+                );
             },
           ),
           ListTile(
