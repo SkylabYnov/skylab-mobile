@@ -1,99 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skylab_mobile/view_models/user_view_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:skylab_mobile/views/settings_screen.dart';
 
-class EditProfileScreen extends StatefulWidget {
+class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
-
-  @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
-}
-
-class _EditProfileScreenState extends State<EditProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
-  bool isEditingName = false;
-  bool isEditingPassword = false;
-
-  late TextEditingController _nameController;
-  late TextEditingController _passwordController;
-
-  @override
-  void initState() {
-    super.initState();
-    final user = FirebaseAuth.instance.currentUser;
-
-    _nameController = TextEditingController(text: user?.displayName ?? '');
-    _passwordController = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _nameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _saveChanges(UserViewModel userViewModel) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      try {
-        if (isEditingName) {
-          await user.updateDisplayName(_nameController.text);
-        }
-        if (isEditingPassword && _passwordController.text.isNotEmpty) {
-          await user.updatePassword(_passwordController.text);
-        }
-
-        await user.reload();
-        userViewModel.loadUser();
-
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Profile updated")),
-          );
-          Navigator.pop(context);
-        }
-      } catch (e) {
-        print("Update failed: $e");
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Error: ${e.toString()}")),
-        );
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final userViewModel = Provider.of<UserViewModel>(context);
-    final user = FirebaseAuth.instance.currentUser;
+    final user = userViewModel.userModel;
 
     return Scaffold(
       appBar: AppBar(title: const Text("Edit Profile")),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
-          key: _formKey,
           child: Column(
             children: [
               // NAME
               Row(
                 children: [
                   Expanded(
-                    child: isEditingName
+                    child: userViewModel.isEditingName
                         ? TextFormField(
-                            controller: _nameController,
+                            controller: userViewModel.nameController,
                             decoration: const InputDecoration(labelText: "Name"),
                           )
-                        : Text("Name: ${user?.displayName ?? ''}"),
+                        : Text("Name: ${user?.name ?? ''}"),
                   ),
                   TextButton(
-                    onPressed: () {
-                      setState(() {
-                        isEditingName = !isEditingName;
-                      });
-                    },
-                    child: Text(isEditingName ? "Cancel" : "Edit"),
+                    onPressed: userViewModel.toggleNameEditing,
+                    child: Text(userViewModel.isEditingName ? "Cancel" : "Edit"),
                   )
                 ],
               ),
@@ -103,13 +41,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               // EMAIL
               Row(
                 children: [
-                  Expanded(
-                    child: Text("Email: ${user?.email ?? ''}"),
-                  ),
-                  const TextButton(
-                    onPressed: null, 
-                    child: Text("Edit"),
-                  )
+                  Expanded(child: Text("Email: ${user?.email ?? ''}")),
+                  const Text("(Email can't be changed)", style: TextStyle(color: Colors.grey)),
                 ],
               ),
 
@@ -119,28 +52,31 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Row(
                 children: [
                   Expanded(
-                    child: isEditingPassword
+                    child: userViewModel.isEditingPassword
                         ? TextFormField(
-                            controller: _passwordController,
+                            controller: userViewModel.passwordController,
                             obscureText: true,
                             decoration: const InputDecoration(labelText: "New Password"),
                           )
                         : const Text("Password: ********"),
                   ),
                   TextButton(
-                    onPressed: () {
-                      setState(() {
-                        isEditingPassword = !isEditingPassword;
-                      });
-                    },
-                    child: Text(isEditingPassword ? "Cancel" : "Change"),
+                    onPressed: userViewModel.togglePasswordEditing,
+                    child: Text(userViewModel.isEditingPassword ? "Cancel" : "Change"),
                   )
                 ],
               ),
 
               const SizedBox(height: 24),
+              const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: () => _saveChanges(userViewModel),
+                onPressed: () {
+                  userViewModel.updateProfile(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsScreen()),
+                  );
+                },
                 child: const Text("Save Changes"),
               ),
             ],
