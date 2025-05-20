@@ -1,14 +1,19 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user.dart';
 
 class UserViewModel extends ChangeNotifier {
+  final nameController = TextEditingController();
+  final passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
   UserModel? _user;
+  bool isEditingName = false;
+  bool isEditingPassword = false;
 
-  UserModel? get user => _user;
+  UserModel? get userModel => _user;
+  User? get firebaseUser => _auth.currentUser;
 
-  // Fetch the current user
   void loadUser() {
     final currentUser = _auth.currentUser;
     if (currentUser != null) {
@@ -18,6 +23,8 @@ class UserViewModel extends ChangeNotifier {
         email: currentUser.email ?? '',
         profileImageUrl: currentUser.photoURL,
       );
+      nameController.text = currentUser.displayName ?? '';
+      passwordController.clear();
       notifyListeners();
     }
   }
@@ -55,7 +62,7 @@ class UserViewModel extends ChangeNotifier {
 
       _user = UserModel(
         id: credential.user!.uid,
-        name: "New User", 
+        name: "New User",
         email: credential.user!.email ?? '',
         profileImageUrl: credential.user!.photoURL,
       );
@@ -72,5 +79,47 @@ class UserViewModel extends ChangeNotifier {
     await _auth.signOut();
     _user = null;
     notifyListeners();
+  }
+
+  void toggleNameEditing() {
+    isEditingName = !isEditingName;
+    notifyListeners();
+  }
+
+  void togglePasswordEditing() {
+    isEditingPassword = !isEditingPassword;
+    notifyListeners();
+  }
+
+  Future<void> updateProfile(BuildContext context) async {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      try {
+        if (isEditingName) {
+          await currentUser.updateDisplayName(nameController.text);
+        }
+        if (isEditingPassword && passwordController.text.isNotEmpty) {
+          await currentUser.updatePassword(passwordController.text);
+        }
+
+        await currentUser.reload();
+        loadUser();
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Profile updated")),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Error: ${e.toString()}")),
+        );
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }

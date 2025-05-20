@@ -11,9 +11,9 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<UserViewModel>(
       builder: (context, userViewModel, child) {
-        userViewModel.loadUser();
+        userViewModel.loadUser(); 
 
-        if (userViewModel.user != null) {
+        if (userViewModel.userModel != null) {
           return HomeScreen();
         } else {
           return LoginScreen();
@@ -22,3 +22,4 @@ class AuthWrapper extends StatelessWidget {
     );
   }
 }
+
