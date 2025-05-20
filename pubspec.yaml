@@ -38,6 +38,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   introduction_screen: ^3.1.17
   shared_preferences: ^2.5.3
+  cloud_firestore: ^4.0.0
 
 dev_dependencies:
   flutter_test:
@@ -50,8 +51,6 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/icon-arrow-left.png
-    - assets/icon-arrow-right.png
     - assets/icon-skylab.png
     - assets/logo-skylab.png
 
