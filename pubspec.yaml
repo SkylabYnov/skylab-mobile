@@ -53,6 +53,7 @@ flutter:
   assets:
     - assets/icon-skylab.png
     - assets/logo-skylab.png
+    - assets/icon-drone.png
 
 
 
