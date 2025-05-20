@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../services/auth_service.dart';
 import '../core/theme/theme_provider.dart';
 import 'login_screen.dart';
+import 'package:skylab_mobile/widgets/drone_logo.dart';
 import '../views/dashboard_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -48,6 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            DroneLogo(title: "Drone"),
+            SizedBox(height: 40),
             droneId != null
               ? Text("Your drone ID is: $droneId")
               : Column(
