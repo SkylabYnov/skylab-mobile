@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class LinkTextButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final Color? textColor; 
 
   const LinkTextButton({
     super.key,
     required this.text,
     required this.onPressed,
+    this.textColor, 
   });
 
   @override
@@ -23,7 +25,7 @@ class LinkTextButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
+          color: textColor ?? Theme.of(context).colorScheme.primary, 
         ),
       ),
     );

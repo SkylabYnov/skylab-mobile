@@ -6,7 +6,7 @@ import 'package:skylab_mobile/services/auth_service.dart';
 import 'package:skylab_mobile/views/login_screen.dart';
 import 'package:skylab_mobile/views/edit_profile_screen.dart';
 import 'package:skylab_mobile/widgets/buttons/primary_button.dart';
-
+import 'package:skylab_mobile/widgets/buttons/link_text_button.dart';
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -23,7 +23,10 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 20),
             const Align(
               alignment: Alignment.centerLeft,
-              child: Text("Account", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              child: Text(
+                "Account",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 12),
             PrimaryButton(
@@ -38,7 +41,10 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 32),
             const Align(
               alignment: Alignment.centerLeft,
-              child: Text("Preferences", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              child: Text(
+                "Preferences",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 12),
             SwitchListTile(
@@ -50,7 +56,10 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: 32),
             const Align(
               alignment: Alignment.centerLeft,
-              child: Text("About", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              child: Text(
+                "About",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
             const SizedBox(height: 12),
             const ListTile(
@@ -61,11 +70,13 @@ class SettingsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/login');
-                },
-                child: const Text("Log out", style: TextStyle(color: Colors.red)),
+              child: LinkTextButton(
+                text: "Log out",
+                onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                ),
+                textColor: Colors.red,
               ),
             ),
           ],
