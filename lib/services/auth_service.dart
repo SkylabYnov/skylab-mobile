@@ -36,7 +36,7 @@ class AuthService {
     Future<User?> signInWithGoogle() async {
     try {
         final GoogleSignIn googleSignIn = kIsWeb
-            ? GoogleSignIn(clientId: 'YOUR_WEB_CLIENT_ID_HERE')
+            ? GoogleSignIn(clientId: '303264154880-4286kef5fvudol6lmuoooqm0jvmk6tme.apps.googleusercontent.com')
             : GoogleSignIn(); // Android/iOS
 
         final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
