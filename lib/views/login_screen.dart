@@ -7,6 +7,7 @@ import 'package:skylab_mobile/views/onboarding_screen.dart';
 import 'package:skylab_mobile/widgets/buttons/primary_button.dart';
 import 'package:skylab_mobile/widgets/app_logo.dart';
 import 'package:skylab_mobile/widgets/custom_text_field.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,7 +28,7 @@ class LoginScreenState extends State<LoginScreen> {
           context, MaterialPageRoute(builder: (context) => OnboardingScreen()));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login failed")));
+          const SnackBar(content: Text("Login failed")));
     }
   }
 
@@ -42,12 +43,12 @@ class LoginScreenState extends State<LoginScreen> {
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: IntrinsicHeight(
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        AppLogo(title: "Login"),
-                        SizedBox(height: 40),
+                        const AppLogo(title: "Login"),
+                        const SizedBox(height: 40),
 
                         CustomTextField(
                           controller: emailController,
@@ -58,23 +59,51 @@ class LoginScreenState extends State<LoginScreen> {
                           labelText: "Password",
                           obscureText: true,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
 
                         PrimaryButton(
                           onPressed: login,
-                          child: Text("Login"),
+                          child: const Text("Login"),
+                        ),
+                        const SizedBox(height: 20),
+
+                        PrimaryButton(
+                          onPressed: () async {
+                            User? user = await AuthService().signInWithGoogle();
+                            if (user != null) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const OnboardingScreen(),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Google login failed")),
+                              );
+                            }
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(FontAwesomeIcons.google, color: Colors.red),
+                              SizedBox(width: 10),
+                              Text("Sign in with Google"),
+                            ],
+                          ),
                         ),
 
-                        Spacer(),
+                        const Spacer(),
 
                         LinkTextButton(
                           text: "New to our app? Create an account",
                           onPressed: () => Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => RegisterScreen()),
+                            MaterialPageRoute(
+                                builder: (context) => const RegisterScreen()),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
