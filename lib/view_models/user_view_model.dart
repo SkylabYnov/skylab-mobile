@@ -116,6 +116,12 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
+  void resetEditState() {
+    isEditingName = false;
+    isEditingPassword = false;
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     nameController.dispose();
