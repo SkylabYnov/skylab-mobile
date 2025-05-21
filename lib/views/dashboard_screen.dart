@@ -12,9 +12,11 @@ class DroneControllerScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Skylab Dashboard"),
         leading: IconButton(
+ feature/google-login
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
+
           },
         ),
         actions: [
@@ -34,6 +36,7 @@ class DroneControllerScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
+
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -49,10 +52,12 @@ class DroneControllerScreen extends StatelessWidget {
                     child: Text("Drone", style: TextStyle(fontSize: 18)),
                   ),
                 ),
+
               ),
             ),
             const SizedBox(height: 16),
             Expanded(
+
               child: InkWell(
                 onTap: () {
                   Navigator.push(
@@ -68,6 +73,7 @@ class DroneControllerScreen extends StatelessWidget {
                     child: Text("Controller", style: TextStyle(fontSize: 18)),
                   ),
                 ),
+
               ),
             ),
           ],
