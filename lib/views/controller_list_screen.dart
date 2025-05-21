@@ -20,6 +20,32 @@ class _ControllerListScreenState extends State<ControllerListScreen> {
     });
   }
 
+  Future<void> _editControllerId(int index) async {
+    final controller = controllers[index];
+    final TextEditingController textController = TextEditingController(text: controller['id']);
+
+    final newId = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Controller ID'),
+        content: TextField(
+          controller: textController,
+          decoration: const InputDecoration(labelText: 'Controller ID'),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          ElevatedButton(onPressed: () => Navigator.pop(context, textController.text), child: const Text('Save')),
+        ],
+      ),
+    );
+
+    if (newId != null && newId.isNotEmpty) {
+      setState(() {
+        controllers[index]['id'] = newId;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +64,7 @@ class _ControllerListScreenState extends State<ControllerListScreen> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit),
-                  onPressed: () {
-                  },
+                  onPressed: () => _editControllerId(index),
                 ),
                 ElevatedButton(
                   onPressed: () => toggleState(index),

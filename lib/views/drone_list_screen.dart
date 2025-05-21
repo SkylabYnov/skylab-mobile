@@ -20,6 +20,32 @@ class _DroneListScreenState extends State<DroneListScreen> {
     });
   }
 
+  Future<void> _editDroneId(int index) async {
+    final drone = drones[index];
+    final TextEditingController textController = TextEditingController(text: drone['id']);
+
+    final newId = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Drone ID'),
+        content: TextField(
+          controller: textController,
+          decoration: const InputDecoration(labelText: 'Drone ID'),
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          ElevatedButton(onPressed: () => Navigator.pop(context, textController.text), child: const Text('Save')),
+        ],
+      ),
+    );
+
+    if (newId != null && newId.isNotEmpty) {
+      setState(() {
+        drones[index]['id'] = newId;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,8 +64,7 @@ class _DroneListScreenState extends State<DroneListScreen> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.edit),
-                  onPressed: () {
-                  },
+                  onPressed: () => _editDroneId(index),
                 ),
                 ElevatedButton(
                   onPressed: () => toggleState(index),
