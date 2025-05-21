@@ -12,7 +12,6 @@ class DroneControllerScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Skylab Dashboard"),
         leading: IconButton(
- feature/google-login
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
