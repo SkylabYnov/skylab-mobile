@@ -6,6 +6,7 @@ import '../core/theme/theme_provider.dart';
 import 'login_screen.dart';
 import 'package:skylab_mobile/widgets/drone_logo.dart';
 import '../views/dashboard_screen.dart';
+import 'package:skylab_mobile/widgets/buttons/primary_button.dart'; // <-- Add this import
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -43,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (isLoading) return Center(child: CircularProgressIndicator());
+
     return Scaffold(
       appBar: AppBar(title: Text("Home")),
       body: Center(
@@ -56,7 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
               : Column(
                   children: [
                     Text("No drone connected."),
-                    TextButton(
+                    SizedBox(height: 16),
+                    PrimaryButton(
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
