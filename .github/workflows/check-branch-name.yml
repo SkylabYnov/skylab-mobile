@@ -1,0 +1,53 @@
+name: Branch name convention check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  check-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check branch name format
+        id: check
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          echo "🔍 Checking branch name: $BRANCH_NAME"
+
+          if [[ "$BRANCH_NAME" =~ ^(feature|bugfix|hotfix)\/TSL-[0-9]+[-a-z0-9]*$ ]]; then
+            echo "valid=true" >> $GITHUB_OUTPUT
+          elif [[ "$BRANCH_NAME" =~ ^(release|test)\/.+$ ]]; then
+            echo "valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "valid=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment on PR if invalid
+        if: steps.check.outputs.valid == 'false'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `❌ **Nom de branche invalide : \`${{ github.head_ref }}\`**
+
+Le nom de la branche ne respecte pas les conventions définies.
+
+**Formats valides :**
+- \`feature/TSL-xxxx-description\`
+- \`bugfix/TSL-xxxx-description\`
+- \`hotfix/TSL-xxxx-description\`
+- \`release/*\`
+- \`test/*\`
+
+Merci de renommer votre branche pour respecter les conventions. 🙏`
+            })
+
+      - name: Fail if branch name is invalid
+        if: steps.check.outputs.valid == 'false'
+        run: |
+          echo "❌ Nom de branche invalide : ${{ github.head_ref }}"
+          exit 1
